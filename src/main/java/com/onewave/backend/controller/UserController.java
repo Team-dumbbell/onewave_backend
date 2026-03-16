@@ -17,6 +17,7 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+
     @GetMapping("/profile")
     public Map<String, Object> profile(Authentication authentication) {
         String googleSub = authentication.getName();
