@@ -22,7 +22,9 @@ configurations {
 
 repositories {
 	mavenCentral()
+    maven { url 'https://mvnrepository.com/artifact/com.google.genai/google-genai' }
 }
+
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -46,15 +48,15 @@ dependencies {
 	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-	runtimeOnly 'org.postgresql:postgresql'
 
     //html 파싱
     implementation 'org.jsoup:jsoup:1.17.2'
+
+    // 제미나이
+    implementation 'com.google.genai:google-genai:1.22.0'
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()
