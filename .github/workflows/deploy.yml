@@ -46,26 +46,5 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "Stopping existing application..."
-            APP_PID=$(ps -ef | grep '[j]ava -jar app.jar' | awk '{print $2}')
-
-            if [ -n "$APP_PID" ]; then
-              echo "Found app pid: $APP_PID"
-              kill -15 $APP_PID || true
-              sleep 5
-            fi
-
-            REMAIN_PID=$(ps -ef | grep '[j]ava -jar app.jar' | awk '{print $2}')
-            if [ -n "$REMAIN_PID" ]; then
-              echo "Force killing remaining pid: $REMAIN_PID"
-              kill -9 $REMAIN_PID || true
-              sleep 2
-            fi
-
-            echo "Starting new application..."
-            cd /home/ec2-user/app
-            nohup java -jar app.jar --spring.profiles.active=local > app.log 2>&1 < /dev/null &
-            sleep 5
-
-            echo "Check running process:"
-            ps -ef | grep '[j]ava -jar app.jar'
+            chmod +x /home/ec2-user/app/deploy.sh
+            /home/ec2-user/app/deploy.sh
