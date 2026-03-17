@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "words")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Word {
 
     @Id
@@ -31,16 +31,18 @@ public class Word {
     @Column(nullable = false, length = 120)
     private String word;
 
+    // 사용자의 모국어로 번역된 의미 (예: 한국어 사용자가 일본 노래를 들으면 한국어로 저장)
     @Column(nullable = false, columnDefinition = "text")
     private String meaning;
 
     @Column(columnDefinition = "text")
-    private String example; // AI가 가사 문맥에 맞춰 생성해줄 예문
+    private String example;
 
     @Column(name = "part_of_speech", length = 40)
     private String partOfSpeech;
 
-    @Enumerated(EnumType.STRING) // DB에 문자열로 저장
+    // 노래의 원래 언어
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Language language;
 
@@ -48,7 +50,7 @@ public class Word {
     private OffsetDateTime addedAt = OffsetDateTime.now();
 
     @Builder
-    public Word(User user, Music music, String word, String meaning, String example, String partOfSpeech, Language language) {
+    public Word(User user, Music music, String word, String meaning, String example, String partOfSpeech, Language language, Integer frequency) {
         this.user = user;
         this.music = music;
         this.word = word;
