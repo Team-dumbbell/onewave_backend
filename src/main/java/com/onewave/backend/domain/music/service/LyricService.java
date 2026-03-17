@@ -1,8 +1,9 @@
 package com.onewave.backend.domain.music.service;
 
-
+import com.onewave.backend.domain.music.entity.Music;
 import com.onewave.backend.domain.music.dto.LyricsResponse;
 import com.onewave.backend.domain.music.dto.MusicSearchResponse;
+import com.onewave.backend.domain.music.repository.MusicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class LyricService {
+
+    private final MusicRepository musicRepository;
+
     private final WebClient webClient = WebClient.builder()
             .baseUrl("https://lrclib.net/api")
             .build();
@@ -47,24 +51,41 @@ public class LyricService {
                 .collect(Collectors.toList());
     }
 
-    public LyricsResponse getLyricsById(Long id) {
-        // LRCLIB API: /get/{id} 호출
-        Map<String, Object> response = webClient.get()
-                .uri("/get/{id}", id)
-                .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {})
-                .block();
+    public LyricsResponse getLyricsById(Long lrclibId) {
+        // 1. 먼저 DB에 해당 lrclibId로 저장된 곡이 있는지 확인
+        return musicRepository.findByLrclibId(lrclibId)
+                .map(music -> LyricsResponse.builder()
+                        .id(music.getLrclibId())
+                        .trackName(music.getTrackName())
+                        .artistName(music.getArtistName())
+                        .plainLyrics(music.getContent())
+                        .build())
+                // 2. DB에 없으면 외부 API 호출
+                .orElseGet(() -> {
+                    Map<String, Object> response = webClient.get()
+                            .uri("/get/{id}", lrclibId)
+                            .retrieve()
+                            .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {})
+                            .block();
 
-        if (response == null) {
-            throw new RuntimeException("해당 ID의 가사를 찾을 수 없습니다.");
-        }
+                    if (response == null) throw new RuntimeException("가사를 찾을 수 없습니다.");
 
-        return LyricsResponse.builder()
-                .id(((Number) response.get("id")).longValue())
-                .trackName((String) response.get("trackName"))
-                .artistName((String) response.get("artistName"))
-                .plainLyrics((String) response.get("plainLyrics"))
-                .syncedLyrics((String) response.get("syncedLyrics"))
-                .build();
+                    String plainLyrics = (String) response.get("plainLyrics");
+
+                    // 3. API 결과를 DB에 저장 (영속화)
+                    musicRepository.save(Music.builder()
+                            .lrclibId(lrclibId)
+                            .trackName((String) response.get("trackName"))
+                            .artistName((String) response.get("artistName"))
+                            .content(plainLyrics)
+                            .build());
+
+                    return LyricsResponse.builder()
+                            .id(lrclibId)
+                            .trackName((String) response.get("trackName"))
+                            .artistName((String) response.get("artistName"))
+                            .plainLyrics(plainLyrics)
+                            .build();
+                });
     }
 }
