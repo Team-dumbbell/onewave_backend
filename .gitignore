@@ -38,3 +38,6 @@ out/
 
 ### 뭐시기 그거
 src/main/resources/application-local.properties
+
+*.pem
+onewave-key.pem
