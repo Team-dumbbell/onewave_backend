@@ -7,6 +7,7 @@ import com.onewave.backend.domain.music.service.LyricService;
 import com.onewave.backend.domain.user.entity.User;
 import com.onewave.backend.domain.user.UserRepository;
 import com.onewave.backend.domain.word.dto.WordExtractionResponse;
+import com.onewave.backend.domain.word.dto.WordResponse;
 import com.onewave.backend.domain.word.entity.Language;
 import com.onewave.backend.domain.word.entity.Word;
 import com.onewave.backend.domain.word.repository.WordRepository;
@@ -28,7 +29,7 @@ public class VocabService {
     private final UserRepository userRepository;
 
     @Transactional
-    public List<Word> extractAndSaveWords(Long lrclibId, Long userId, Language language) {
+    public List<Word> extractAndSaveWords(Long lrclibId, Long userId) {
         // 1. LyricService를 통해 데이터 확보 (이미 내부에서 DB 저장까지 완료됨)
         LyricsResponse lyricsDto = lyricService.getLyricsById(lrclibId);
 
@@ -36,7 +37,7 @@ public class VocabService {
         Music music = musicRepository.findByLrclibId(lrclibId).orElseThrow();
 
         // 3. AI 호출 및 단어 저장
-        WordExtractionResponse response = aiService.extractWords(lyricsDto.getPlainLyrics(), language.name());
+        WordExtractionResponse response = aiService.extractWords(lyricsDto.getPlainLyrics(), Language.KOREAN);
         User user = userRepository.findById(userId).orElseThrow();
 
         List<Word> words = response.words().stream()
@@ -47,10 +48,23 @@ public class VocabService {
                         .meaning(item.meaning())
                         .example(item.example())
                         .partOfSpeech(item.partOfSpeech())
-                        .language(language)
+                        .language(Language.KOREAN)
                         .build())
                 .collect(Collectors.toList());
 
         return wordRepository.saveAll(words);
+    }
+
+    @Transactional(readOnly = true)
+    public List<WordResponse> getWordsByUserId(Long userId) {
+        return wordRepository.findByUserId(userId).stream()
+                .map(word -> WordResponse.builder()
+                        .id(word.getId())
+                        .word(word.getWord())
+                        .meaning(word.getMeaning())
+                        .partOfSpeech(word.getPartOfSpeech())
+                        .example(word.getExample())
+                        .build())
+                .toList();
     }
 }

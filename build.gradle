@@ -55,6 +55,9 @@ dependencies {
 
     // 제미나이
     implementation 'com.google.genai:google-genai:1.22.0'
+
+    // Swagger (SpringDoc OpenAPI)
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
 }
 
 

@@ -4,6 +4,7 @@ import com.google.genai.Client;
 import com.google.genai.types.GenerateContentConfig;
 import com.google.genai.types.GenerateContentResponse;
 import com.onewave.backend.domain.word.dto.WordExtractionResponse;
+import com.onewave.backend.domain.word.entity.Language;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
@@ -23,7 +24,7 @@ public class AiService {
         this.objectMapper = objectMapper;
     }
 
-    public WordExtractionResponse extractWords(String lyrics, String language) {
+    public WordExtractionResponse extractWords(String lyrics, Language language) {
         String prompt = String.format("""
             제공된 가사에서 %s 학습을 위한 주요 단어 5개를 추출하세요.
             반드시 다음 JSON 구조를 따르세요:

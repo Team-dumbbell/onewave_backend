@@ -3,16 +3,14 @@ package com.onewave.backend.domain.word.entity;
 import com.onewave.backend.domain.music.entity.Music;
 import com.onewave.backend.domain.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "words")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Word {
 
