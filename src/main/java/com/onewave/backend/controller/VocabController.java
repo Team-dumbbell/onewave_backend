@@ -33,7 +33,7 @@ public class VocabController {
     @PostMapping("/generate/{musicId}")
     public ResponseEntity<String> generateVocab(
             @PathVariable Long musicId,
-            @RequestParam Authentication authentication
+            Authentication authentication
     ) {
         String googleSub = authentication.getName();
         User user = userRepository.findByGoogleSub(googleSub)
