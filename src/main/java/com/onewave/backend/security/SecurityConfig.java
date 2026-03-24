@@ -35,7 +35,7 @@ public class SecurityConfig {
                                 "/swagger-ui/**",          // UI 리소스 (JS, CSS)
                                 "/swagger-ui.html"         // 메인 접속 경로 (Redirect용)
                         ).permitAll()
-//                        .anyRequest().authenticated()
+                        .anyRequest().authenticated()
                 )
 
                 .oauth2Login(oauth -> oauth
