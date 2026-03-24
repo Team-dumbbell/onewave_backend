@@ -13,4 +13,5 @@ public class AuthController {
     public void google(HttpServletResponse response) throws IOException {
         response.sendRedirect("/oauth2/authorization/google");
     }
+
 }
