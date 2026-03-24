@@ -72,6 +72,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 + "&is_new_user=" + (isNewUser ? "1" : "0");
 
         System.out.println("JWT " + jwt);
+        System.out.println("REDIRECT URL = " + redirectUrl);
         response.sendRedirect(redirectUrl);
     }
 
