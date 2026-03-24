@@ -30,7 +30,10 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/auth/**",
                                 "/oauth2/**",
-                                "/login/oauth2/**"
+                                "/login/oauth2/**",
+                                "/v3/api-docs/**",         // OpenAPI 데이터 (JSON/YAML)
+                                "/swagger-ui/**",          // UI 리소스 (JS, CSS)
+                                "/swagger-ui.html"         // 메인 접속 경로 (Redirect용)
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

@@ -1,0 +1,6 @@
+server:
+  forward-headers-strategy: native
+
+app:
+  frontend-base-url: https://team-moleback.store.com
+
