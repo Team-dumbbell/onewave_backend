@@ -11,7 +11,7 @@ public class AuthController {
 
     @GetMapping("/auth/google")
     public void google(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/oauth2/authorization/google");
+        response.sendRedirect("https://team-moleback.store/oauth2/authorization/google");
     }
 
 }
