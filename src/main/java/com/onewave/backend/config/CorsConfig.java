@@ -11,7 +11,7 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration c = new CorsConfiguration();
-        c.setAllowedOriginPatterns(List.of("http://localhost:5173", "http://team-moleback.store", "https://team-moleback.store", "https://hum-bice.vercel.app"));
+        c.setAllowedOriginPatterns(List.of("http://localhost:5173", "http://team-moleback.store", "https://team-moleback.store", "https://hum-bice.vercel.app", "chrome-extension://*"));
         c.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         c.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
         c.setAllowCredentials(true);
