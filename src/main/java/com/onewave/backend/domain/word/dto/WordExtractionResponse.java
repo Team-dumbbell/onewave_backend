@@ -8,7 +8,7 @@ public record WordExtractionResponse(
     public record WordItem(
             String word,
             String meaning,
-            String example,
+            List<String> examples,    // ✨ 단일 String에서 List로 변경
             String partOfSpeech,
             List<String> synonyms
     ) {}
