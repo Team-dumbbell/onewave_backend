@@ -36,7 +36,7 @@ public class AiService {
                   "meaning": "뜻(한국어)",
                   "example": "예문",
                   "partOfSpeech": "품사",
-                  "synonyms": ["유의어1"]
+                  "synonyms": ["유의어1", "유의어2"]
                 }
               ]
             }
