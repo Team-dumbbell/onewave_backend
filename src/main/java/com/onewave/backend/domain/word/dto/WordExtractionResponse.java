@@ -1,5 +1,7 @@
 package com.onewave.backend.domain.word.dto;
 
+import com.onewave.backend.domain.word.entity.Language;
+
 import java.util.List;
 
 public record WordExtractionResponse(
@@ -8,8 +10,9 @@ public record WordExtractionResponse(
     public record WordItem(
             String word,
             String meaning,
-            List<String> examples,    // ✨ 단일 String에서 List로 변경
+            String examples,
             String partOfSpeech,
-            List<String> synonyms
+            List<String> synonyms,
+            Language language
     ) {}
 }
