@@ -2,6 +2,7 @@ package com.onewave.backend.domain.word.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.List;
@@ -19,6 +20,15 @@ public class WordResponse {
     private List<String> examples;   // ✨ 여러 노래의 예문들
     private List<String> synonyms;   // ✨ 유의어들
 
-    private String musicTitle;       // 처음 추출된 곡 혹은 대표 곡 정보
-    private String artist;
+    // ✨ 단일 곡 정보에서 곡 리스트 정보로 변경
+    private List<MusicInfo> musicList;
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @EqualsAndHashCode
+    public static class MusicInfo {
+        private String title;
+        private String artist;
+    }
 }
