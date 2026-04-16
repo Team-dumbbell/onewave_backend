@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "words")
@@ -33,11 +35,17 @@ public class Word {
     @Column(nullable = false, columnDefinition = "text")
     private String meaning;
 
-    @Column(columnDefinition = "text")
-    private String example;
+    @OneToMany(mappedBy = "word", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Synonym> synonyms = new HashSet<>();
+
+    @OneToMany(mappedBy = "word", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ExampleSentence> examples = new HashSet<>();
 
     @Column(name = "part_of_speech", length = 40)
     private String partOfSpeech;
+
+    @Column(nullable = false)
+    private int frequency = 1;
 
     // 노래의 원래 언어
     @Enumerated(EnumType.STRING)
@@ -48,13 +56,18 @@ public class Word {
     private OffsetDateTime addedAt = OffsetDateTime.now();
 
     @Builder
-    public Word(User user, Music music, String word, String meaning, String example, String partOfSpeech, Language language, Integer frequency) {
+    public Word(User user, Music music, String word, String meaning, String partOfSpeech, Language language, Integer frequency) {
         this.user = user;
         this.music = music;
         this.word = word;
         this.meaning = meaning;
-        this.example = example;
         this.partOfSpeech = partOfSpeech;
         this.language = language;
+        this.frequency = (frequency != null) ? frequency : 1;
+    }
+
+    // 빈도수 증가 편의 메서드
+    public void incrementFrequency() {
+        this.frequency++;
     }
 }
