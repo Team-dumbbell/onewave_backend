@@ -71,6 +71,10 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 + "&internal_id=" + url(String.valueOf(user.getId()))
                 + "&is_new_user=" + (isNewUser ? "1" : "0");
 
+        //필요시 삭제 요망(한것)
+        System.out.println("JWT " + jwt);
+        System.out.println("REDIRECT URL = " + redirectUrl);
+        //
         response.sendRedirect(redirectUrl);
     }
 

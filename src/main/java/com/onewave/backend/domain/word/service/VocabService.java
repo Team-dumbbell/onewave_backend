@@ -58,13 +58,21 @@ public class VocabService {
     @Transactional(readOnly = true)
     public List<WordResponse> getWordsByUserId(Long userId) {
         return wordRepository.findByUserId(userId).stream()
-                .map(word -> WordResponse.builder()
-                        .id(word.getId())
-                        .word(word.getWord())
-                        .meaning(word.getMeaning())
-                        .partOfSpeech(word.getPartOfSpeech())
-                        .example(word.getExample())
-                        .build())
+                .map(word -> {
+                    // Word 엔티티에 music 연관관계가 있다고 가정 (예: word.getMusic())
+                    String title = (word.getMusic() != null) ? word.getMusic().getTrackName() : "Unknown";
+                    String artist = (word.getMusic() != null) ? word.getMusic().getArtistName() : "Unknown";
+
+                    return WordResponse.builder()
+                            .id(word.getId())
+                            .word(word.getWord())
+                            .meaning(word.getMeaning())
+                            .partOfSpeech(word.getPartOfSpeech())
+                            .example(word.getExample())
+                            .musicTitle(title)
+                            .artist(artist)
+                            .build();
+                })
                 .toList();
     }
 }

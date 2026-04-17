@@ -1,6 +1,7 @@
 server:
-  forward-headers-strategy: native
+  port: 8081
+  forward-headers-strategy: framework
 
 app:
-  frontend-base-url: https://team-moleback.store.com
+  frontend-base-url: team-moleback.store
 

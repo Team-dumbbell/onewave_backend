@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
   application:
@@ -36,7 +36,7 @@ spring:
 
 # 커스텀 설정
 app:
-  frontend-base-url: http://localhost:5173
+  frontend-base-url: https://hum-bice.vercel.app
   frontend-auth-callback-path: /auth/callback
   jwt:
     secret: ${JWT_SECRET}
