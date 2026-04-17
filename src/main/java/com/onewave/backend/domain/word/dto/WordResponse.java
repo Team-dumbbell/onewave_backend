@@ -2,7 +2,10 @@ package com.onewave.backend.domain.word.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+
+import java.util.List;
 
 @Getter
 @Builder
@@ -10,9 +13,22 @@ import lombok.Getter;
 public class WordResponse {
     private Long id;
     private String word;
-    private String meaning;      // 유저 선호 언어로 저장된 의미
+    private String meaning;
     private String partOfSpeech;
-    private String example;
-    private String musicTitle;   // 어떤 노래에서 뽑았는지 알면 좋겠죠?
-    private String artist;
+    private int frequency;           // ✨ 얼마나 자주 등장했는지 추가
+
+    private List<String> examples;   // ✨ 여러 노래의 예문들
+    private List<String> synonyms;   // ✨ 유의어들
+
+    // ✨ 단일 곡 정보에서 곡 리스트 정보로 변경
+    private List<MusicInfo> musicList;
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @EqualsAndHashCode
+    public static class MusicInfo {
+        private String title;
+        private String artist;
+    }
 }

@@ -55,4 +55,19 @@ public class VocabController {
 
         return ResponseEntity.ok(responses);
     }
+
+    @Operation(summary = "단어 삭제", description = "단어 ID를 기반으로 내 단어장에서 단어를 삭제합니다.")
+    @DeleteMapping("/{wordId}")
+    public ResponseEntity<String> deleteWord(
+            @PathVariable Long wordId,
+            Authentication authentication
+    ) {
+        // 1. 유저 정보 확인
+        String googleSub = authentication.getName();
+
+        // 2. 서비스 호출
+        vocabService.deleteWord(wordId, googleSub);
+
+        return ResponseEntity.ok("단어가 삭제되었습니다.");
+    }
 }

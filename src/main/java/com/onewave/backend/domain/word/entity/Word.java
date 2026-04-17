@@ -6,6 +6,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "words")
@@ -18,23 +22,18 @@ public class Word {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "music_id", nullable = false)
-    private Music music;
-
     @Column(nullable = false, length = 120)
     private String word;
 
-    // 사용자의 모국어로 번역된 의미 (예: 한국어 사용자가 일본 노래를 들으면 한국어로 저장)
-    @Column(nullable = false, columnDefinition = "text")
-    private String meaning;
+    @OneToMany(mappedBy = "word", cascade = CascadeType.ALL)
+    private List<MusicWord> musicWords = new ArrayList<>();
 
-    @Column(columnDefinition = "text")
-    private String example;
+
+    @OneToMany(mappedBy = "word", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Synonym> synonyms = new HashSet<>();
+
+    @OneToMany(mappedBy = "word", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ExampleSentence> examples = new HashSet<>();
 
     @Column(name = "part_of_speech", length = 40)
     private String partOfSpeech;
@@ -48,12 +47,8 @@ public class Word {
     private OffsetDateTime addedAt = OffsetDateTime.now();
 
     @Builder
-    public Word(User user, Music music, String word, String meaning, String example, String partOfSpeech, Language language, Integer frequency) {
-        this.user = user;
-        this.music = music;
+    public Word(String word, String partOfSpeech, Language language, Integer frequency) {
         this.word = word;
-        this.meaning = meaning;
-        this.example = example;
         this.partOfSpeech = partOfSpeech;
         this.language = language;
     }
