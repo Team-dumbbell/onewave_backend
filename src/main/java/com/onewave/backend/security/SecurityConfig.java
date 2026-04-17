@@ -33,7 +33,8 @@ public class SecurityConfig {
                                 "/login/oauth2/**",
                                 "/v3/api-docs/**",         // OpenAPI 데이터 (JSON/YAML)
                                 "/swagger-ui/**",          // UI 리소스 (JS, CSS)
-                                "/swagger-ui.html"         // 메인 접속 경로 (Redirect용)
+                                "/swagger-ui.html",         // 메인 접속 경로 (Redirect용)
+                                "/api/test/token" //테스트용 jwt 토큰 발급 나중에 지우기 (중요)
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
