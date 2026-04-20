@@ -2,9 +2,12 @@ package com.onewave.backend.controller;
 
 import com.onewave.backend.domain.user.UserRepository;
 import com.onewave.backend.domain.user.entity.User;
+import com.onewave.backend.exception.ApiResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,16 +20,15 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-
     @GetMapping("/profile")
-    public Map<String, Object> profile(Authentication authentication) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> profile(Authentication authentication) {
         String googleSub = authentication.getName();
 
         User user = userRepository.findByGoogleSub(googleSub).orElse(null);
         String displayName = user != null && user.getDisplayName() != null ? user.getDisplayName() : "HUM User";
         String email = user != null ? user.getEmail() : "unknown@example.com";
 
-        return Map.of(
+        Map<String, Object> data = Map.of(
                 "users", Map.of(
                         "display_name", displayName,
                         "email", email
@@ -39,10 +41,12 @@ public class UserController {
                         )
                 )
         );
+
+        return ResponseEntity.ok(ApiResponse.ok(data));
     }
 
     @GetMapping("/words")
-    public Map<String, Object> words() {
-        return Map.of("user_words", java.util.List.of());
+    public ResponseEntity<ApiResponse<Map<String, Object>>> words() {
+        return ResponseEntity.ok(ApiResponse.ok(Map.of("user_words", List.of())));
     }
 }

@@ -4,6 +4,7 @@ import com.onewave.backend.domain.music.entity.Music;
 import com.onewave.backend.domain.music.dto.LyricsResponse;
 import com.onewave.backend.domain.music.dto.MusicSearchResponse;
 import com.onewave.backend.domain.music.repository.MusicRepository;
+import com.onewave.backend.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -68,7 +69,7 @@ public class LyricService {
                             .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {})
                             .block();
 
-                    if (response == null) throw new RuntimeException("가사를 찾을 수 없습니다.");
+                    if (response == null) throw new EntityNotFoundException("가사를 찾을 수 없습니다.");
 
                     String plainLyrics = (String) response.get("plainLyrics");
 

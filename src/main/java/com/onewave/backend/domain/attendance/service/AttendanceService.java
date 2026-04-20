@@ -6,6 +6,7 @@ import com.onewave.backend.domain.attendance.entity.Attendance;
 import com.onewave.backend.domain.attendance.repository.AttendanceRepository;
 import com.onewave.backend.domain.user.UserRepository;
 import com.onewave.backend.domain.user.entity.User;
+import com.onewave.backend.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,7 @@ public class AttendanceService {
 
     public AttendanceCheckResponse checkAttendance(String googleSub) {
         User user = userRepository.findByGoogleSub(googleSub)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
         LocalDate today = LocalDate.now();
 
@@ -41,7 +42,7 @@ public class AttendanceService {
     @Transactional(readOnly = true)
     public List<AttendanceDateResponse> getMonthlyAttendance(String googleSub, int year, int month) {
         User user = userRepository.findByGoogleSub(googleSub)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());

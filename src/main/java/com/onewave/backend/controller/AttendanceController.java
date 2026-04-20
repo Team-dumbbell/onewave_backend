@@ -3,6 +3,7 @@ package com.onewave.backend.controller;
 import com.onewave.backend.domain.attendance.dto.AttendanceCheckResponse;
 import com.onewave.backend.domain.attendance.dto.AttendanceDateResponse;
 import com.onewave.backend.domain.attendance.service.AttendanceService;
+import com.onewave.backend.exception.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -18,18 +19,18 @@ public class AttendanceController {
     private final AttendanceService attendanceService;
 
     @PostMapping("/check")
-    public ResponseEntity<AttendanceCheckResponse> checkAttendance(Authentication authentication) {
+    public ResponseEntity<ApiResponse<AttendanceCheckResponse>> checkAttendance(Authentication authentication) {
         String googleSub = authentication.getName();
-        return ResponseEntity.ok(attendanceService.checkAttendance(googleSub));
+        return ResponseEntity.ok(ApiResponse.ok(attendanceService.checkAttendance(googleSub)));
     }
 
     @GetMapping("/monthly")
-    public ResponseEntity<List<AttendanceDateResponse>> getMonthlyAttendance(
+    public ResponseEntity<ApiResponse<List<AttendanceDateResponse>>> getMonthlyAttendance(
             Authentication authentication,
             @RequestParam int year,
             @RequestParam int month
     ) {
         String googleSub = authentication.getName();
-        return ResponseEntity.ok(attendanceService.getMonthlyAttendance(googleSub, year, month));
+        return ResponseEntity.ok(ApiResponse.ok(attendanceService.getMonthlyAttendance(googleSub, year, month)));
     }
 }

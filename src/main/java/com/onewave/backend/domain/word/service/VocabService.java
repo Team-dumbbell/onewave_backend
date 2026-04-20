@@ -12,6 +12,7 @@ import com.onewave.backend.domain.word.entity.*;
 import com.onewave.backend.domain.word.repository.MusicWordRepository;
 import com.onewave.backend.domain.word.repository.UserWordRepository;
 import com.onewave.backend.domain.word.repository.WordRepository;
+import com.onewave.backend.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -133,10 +134,10 @@ public class VocabService {
     @Transactional
     public void deleteWord(Long wordId, String googleSub) {
         User user = userRepository.findByGoogleSub(googleSub)
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
         UserWord userWord = userWordRepository.findByUserIdAndWordId(user.getId(), wordId)
-                .orElseThrow(() -> new RuntimeException("내 단어장에서 해당 단어를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("내 단어장에서 해당 단어를 찾을 수 없습니다."));
 
         userWordRepository.delete(userWord);
     }
