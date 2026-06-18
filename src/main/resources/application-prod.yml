@@ -3,5 +3,10 @@ server:
   forward-headers-strategy: framework
 
 app:
-  frontend-base-url: team-moleback.store
+  frontend-base-url: https://team-moleback.store
 
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
