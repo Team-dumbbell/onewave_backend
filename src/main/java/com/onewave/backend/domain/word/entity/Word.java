@@ -22,7 +22,7 @@ public class Word {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 120)
+    @Column(nullable = false, unique = true, length = 120)
     private String word;
 
     @OneToMany(mappedBy = "word", cascade = CascadeType.ALL)

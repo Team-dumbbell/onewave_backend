@@ -8,6 +8,12 @@ import lombok.*;
 import java.time.OffsetDateTime;
 
 @Entity
+@Table(
+        name = "user_word",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"user_id", "word_id"})
+        }
+)
 @Getter
 @NoArgsConstructor
 public class UserWord {
@@ -15,11 +21,11 @@ public class UserWord {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "word_id")
+    @JoinColumn(name = "word_id", nullable = false)
     private Word word;
 
     @Column(nullable = false, columnDefinition = "text")

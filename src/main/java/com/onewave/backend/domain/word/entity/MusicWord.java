@@ -5,6 +5,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(
+        name = "music_word",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"music_id", "word_id"})
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor
