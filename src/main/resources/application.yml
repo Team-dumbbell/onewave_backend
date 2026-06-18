@@ -7,7 +7,9 @@ spring:
   
   # .env 파일을 읽어오기 위한 설정
   config:
-    import: optional:file:.env[.properties]
+    import:
+      - optional:file:.env[.properties]
+      - optional:file:src/main/resources/.env[.properties]
 
   datasource:
     url: ${DB_URL}

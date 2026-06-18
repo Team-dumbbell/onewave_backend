@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:onewave-test;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: false
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test-google-client-id
+            client-secret: test-google-client-secret
+
+app:
+  frontend-base-url: http://localhost:5173
+  frontend-auth-callback-path: /auth/callback
+  jwt:
+    secret: test-jwt-secret-must-be-at-least-32-bytes
+    access-token-minutes: 60
+
+google:
+  ai:
+    api-key: test-key-placeholder
+    model: gemini-2.0-flash
