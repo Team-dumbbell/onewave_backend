@@ -3,6 +3,7 @@ package com.onewave.backend.controller;
 import com.onewave.backend.domain.user.UserRepository;
 import com.onewave.backend.domain.user.entity.User;
 import com.onewave.backend.exception.ApiResponse;
+import com.onewave.backend.exception.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +25,10 @@ public class UserController {
     public ResponseEntity<ApiResponse<Map<String, Object>>> profile(Authentication authentication) {
         String googleSub = authentication.getName();
 
-        User user = userRepository.findByGoogleSub(googleSub).orElse(null);
-        String displayName = user != null && user.getDisplayName() != null ? user.getDisplayName() : "HUM User";
-        String email = user != null ? user.getEmail() : "unknown@example.com";
+        User user = userRepository.findByGoogleSub(googleSub)
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
+        String displayName = user.getDisplayName() != null ? user.getDisplayName() : "HUM User";
+        String email = user.getEmail();
 
         Map<String, Object> data = Map.of(
                 "users", Map.of(
