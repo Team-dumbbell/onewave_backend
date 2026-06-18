@@ -6,6 +6,7 @@ import com.onewave.backend.domain.attendance.entity.Attendance;
 import com.onewave.backend.domain.attendance.repository.AttendanceRepository;
 import com.onewave.backend.domain.user.UserRepository;
 import com.onewave.backend.domain.user.entity.User;
+import com.onewave.backend.exception.BadRequestException;
 import com.onewave.backend.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,10 @@ public class AttendanceService {
     public List<AttendanceDateResponse> getMonthlyAttendance(String googleSub, int year, int month) {
         User user = userRepository.findByGoogleSub(googleSub)
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
+
+        if (year < 1 || month < 1 || month > 12) {
+            throw new BadRequestException("유효한 연도와 월을 입력해주세요.");
+        }
 
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
